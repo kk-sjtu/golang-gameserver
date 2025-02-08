@@ -31,5 +31,16 @@ func (s *Server) Run() {
 		return
 	}
 	s.listener = tcpListener
-	
+	for {
+		conn, err := s.listener.Accept()
+		if err != nil {
+			continue
+		}
+
+		go func() {
+			newSession := NewSession(conn)
+			newSession.Run()
+
+		}()
+	}
 }

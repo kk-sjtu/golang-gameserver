@@ -1,5 +1,5 @@
 package chat
 
-type Private struct{
-	Message string json:"message"
+type Private struct {
+	Message string `json:"message"`
 }

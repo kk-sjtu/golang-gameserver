@@ -21,6 +21,10 @@ type NormalPacker struct {
 	Order binary.ByteOrder
 }
 
+func NewNormalPacker(order binary.ByteOrder) *NormalPacker {
+	return &NormalPacker{Order: order}
+}
+
 /* Pack 方法用于将 Message 结构体打包成字节流。具体步骤如下：
 1. 创建一个字节切片 buffer，长度为消息长度（8字节）+ ID（8字节）+ 数据长度。
 2. 将消息总长度写入 buffer 的前 8 个字节。

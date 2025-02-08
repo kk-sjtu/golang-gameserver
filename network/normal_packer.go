@@ -58,9 +58,9 @@ func (p *NormalPacker) Unpack(reader io.Reader) (*Message, error) {
 	if err != nil {
 		return nil, err
 	}
-	totalLen := p.Order.Uint64(buffer[:8])
+	totalLen := p.Order.Uint64(buffer[:8]) // ? 为什么是8 ,这是因为
 	id := p.Order.Uint64(buffer[8:])
-	dataLen := totalLen - 16
+	dataLen := totalLen - 16 // 这是认为规定的。8个字节是长度，8个字节是id
 	dataBuffer := make([]byte, dataLen)
 	_, err = io.ReadFull(reader, dataBuffer)
 	if err != nil {
@@ -69,6 +69,7 @@ func (p *NormalPacker) Unpack(reader io.Reader) (*Message, error) {
 	msg := &Message{
 		Id:   id,
 		Data: dataBuffer,
+		// 不需要data-len字段是因为len一下就行
 	}
 	return msg, nil
 }

@@ -36,7 +36,6 @@ func (c *Client) Run() {
 
 	go c.Write(conn)
 	go c.Read(conn)
-	select {}
 }
 func (c Client) Write(conn net.Conn) {
 	tick := time.NewTicker(time.Second)
@@ -47,10 +46,10 @@ func (c Client) Write(conn net.Conn) {
 				fmt.Println("connection is nil, stopping write")
 				return
 			}
-			fmt.Println("这是一个分割线")
+			fmt.Println("这是一个分割线,说明conn不为空")
 			c.send(conn, &Message{
 				Id:   666,
-				Data: []byte("hello,lilithGame"),
+				Data: []byte("hello,lilith Game"),
 			})
 
 		}
@@ -59,11 +58,8 @@ func (c Client) Write(conn net.Conn) {
 }
 
 func (c *Client) send(conn net.Conn, message *Message) {
-	if conn == nil {
-		fmt.Println("connection is nil")
-		return
-	}
-	err := conn.SetWriteDeadline(time.Now().Add(3 * time.Second))
+
+	err := conn.SetWriteDeadline(time.Now().Add(time.Second))
 	if err != nil {
 		fmt.Println("connection is nil")
 		return
@@ -76,50 +72,18 @@ func (c *Client) send(conn net.Conn, message *Message) {
 	_, err = conn.Write(bytes)
 	if err != nil {
 
-		fmt.Println("11111", err)
-		return
+		fmt.Println("2222", err)
 	}
 }
 
 func (c *Client) Read(conn net.Conn) {
-	if conn == nil {
-		fmt.Println("connection is nil")
-		return
-	}
-	//	err := conn.SetReadDeadline(time.Now().Add(time.Second))
-	//	if err != nil {
-	//		fmt.Println("connection is nil")
-	//		return
-	//	}
-	//	for {
-	//		message, err := c.packer.Unpack(conn)
-	//		if _, ok := err.(net.Error); err != nil && ok {
-	//			fmt.Println(err)
-	//			continue
-	//		}
-	//		fmt.Println("client receive message:", string(message.Data))
-	//	}
-	//}
 
 	for {
-		err := conn.SetReadDeadline(time.Now().Add(30 * time.Second)) // 增加超时时间
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
 		message, err := c.packer.Unpack(conn)
-		if err != nil {
-			if netErr, ok := err.(net.Error); ok && netErr.Timeout() {
-				fmt.Println("111read timeout:", err)
-				continue
-			}
-			if err.Error() == "1111connection reset by peer" {
-				fmt.Println("1111connection reset by peer:", err)
-				return
-			}
-			fmt.Println("1111unpack error:", err)
-			return
+		if _, ok := err.(net.Error); err != nil && ok {
+			fmt.Println(err)
+			continue
 		}
-		fmt.Println("11111client receive message:", string(message.Data))
+		fmt.Println("resp message:", string(message.Data))
 	}
 }

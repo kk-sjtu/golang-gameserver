@@ -6,4 +6,5 @@ package network
 // 这里需要一个类似客户端的身份，也就是client
 
 type Client struct {
+	Address string
 }

@@ -3,6 +3,7 @@ package player
 import (
 	"fmt"
 	"golang-gameserver/chat"
+	"golang-gameserver/function"
 )
 
 type Handler func(interface{})

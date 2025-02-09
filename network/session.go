@@ -32,7 +32,7 @@ func (s *Session) Run() { // 这是一个会话。例如现在访问一个网站
 }
 
 func (s *Session) Read() {
-	err := s.conn.SetReadDeadline(time.Now().Add(time.Second))
+	err := s.conn.SetReadDeadline(time.Now().Add(10 * time.Second))
 	if err != nil {
 		fmt.Println(err)
 	}

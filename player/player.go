@@ -1,8 +1,9 @@
 package player
 
 import (
-	"golang-gameserver/chat"
-	"golang-gameserver/function"
+	// "golang-gameserver/chat"
+	//"golang-gameserver/function"
+	"golang-gameserver/define"
 )
 
 type Player struct {
@@ -28,7 +29,7 @@ func (p *Player) Run() {
 		select {
 		case handlerParam := <-p.HandlerParamCh:
 			if fn, ok := p.handlers[handlerParam.HandlerKey]; ok {
-				fn((handlerParam.Data)) // 传下来什么命令，就去找
+				fn(handlerParam.Data) // 传下来什么命令，就去找
 			}
 
 		}

@@ -4,7 +4,7 @@ import "golang-gameserver/player"
 
 // playerMgr 维护在线玩家
 type PlayerMgr struct {
-	players map[uint64]player.player
+	players map[uint64]player.Player
 	addPCh  chan player.Player
 }
 

@@ -30,12 +30,12 @@ func (c *Client) Run() {
 	// 连接服务器
 	conn, err := net.Dial("tcp6", c.Address)
 	if err != nil {
-		fmt.Println("failed to connect", err)
+		fmt.Println("client.go run is error", err)
 		return
 	}
 
-	go c.Write(conn)
 	go c.Read(conn)
+	go c.Write(conn)
 }
 func (c Client) Write(conn net.Conn) {
 	tick := time.NewTicker(time.Second)
@@ -51,36 +51,44 @@ func (c Client) Write(conn net.Conn) {
 				Id:   666,
 				Data: []byte("hello,lilith Game"),
 			})
+			fmt.Println("你好了没")
 
 		}
-
+		fmt.Println("剑与远征")
 	}
+
 }
 
 func (c *Client) send(conn net.Conn, message *Message) {
 
 	err := conn.SetWriteDeadline(time.Now().Add(time.Second))
+
 	if err != nil {
 		fmt.Println("connection is nil")
 		return
 	}
+	fmt.Println("弟弟")
 	bytes, err := c.packer.Pack(message)
+	fmt.Println("消息打包了吗")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
+	fmt.Println("吃饭了吗")
 	_, err = conn.Write(bytes)
+	fmt.Println("这么持久")
 	if err != nil {
 
 		fmt.Println("2222", err)
 	}
+	fmt.Println("怎么回事")
 }
 
 func (c *Client) Read(conn net.Conn) {
 
 	for {
 		message, err := c.packer.Unpack(conn)
-		if _, ok := err.(net.Error); err != nil && ok {
+		if err != nil {
 			fmt.Println(err)
 			continue
 		}
